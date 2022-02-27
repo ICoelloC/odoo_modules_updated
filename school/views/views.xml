@@ -1,28 +1,225 @@
 <odoo>
   <data>
     <!-- explicit list view definition -->
-<!--
-    <record model="ir.ui.view" id="school.list">
-      <field name="name">school list</field>
-      <field name="model">school.school</field>
+
+    <!-- explicit list view definition -->    
+    <record model="ir.ui.view" id="school.student_list">
+      <field name="name">school.student list</field>
+      <field name="model">school.student</field>
       <field name="arch" type="xml">
-        <tree>
+        <tree decoration-info="birth_year>2000" decoration-warning="birth_year&lt;1980"> 
           <field name="name"/>
-          <field name="value"/>
-          <field name="value2"/>
+          <field name="password" />
+          <field name="birth_year" sum="Total"/> <!-- Tengo la posibilidad de añadir totales aunque
+          no tenga mucho sentido aquí-->
         </tree>
       </field>
     </record>
--->
+
+    <record model="ir.ui.view" id="school.student_form">
+      <field name="name">school.student form</field>
+      <field name="model">school.student</field>
+      <field name="arch" type="xml">
+        <form>
+          <header>
+            <field name="state" widget="statusbar"></field>
+          </header>
+          <sheet> 
+            <div class="oe_button_box">
+              <button type="object" class="oe_stat_button" icon="fa-pencil-square-o"  name="regenerate_password">
+                <div class="o_form_field o_stat_info">
+                  <span class="o_stat_value">
+                    <field name="password" string="Password"/>
+                  </span>
+                  <span class="o_stat_text">Password</span>
+                </div>
+              </button>
+            </div>
+            <field name="photo" widget="image" class="oe_avatar"/>
+            <group>
+              <group>
+                <separator string="Personal Data"></separator>
+                <field name="name"/>
+                <field name="birth_year"/> 
+                <field name="password"/> 
+                <field name="dni" />
+                <field name="description" />
+              </group>
+              <group>
+                <separator string="Inscription Data"></separator>
+                <field name="inscription_date" />
+                <field name="last_login" />
+                <field name="is_student" />
+                <field name="classroom" 
+                       attrs="{'invisible':[('is_student','=',False)],
+                               'required':[('is_student','=',True)]}"/>
+                <field name="level" />
+              </group>
+            </group>
+            <notebook>
+              <page string="Teachers">
+                <field name="teachers">
+                  <tree>
+                    <field name="name"/>
+                    <field name="topic"/>
+                  </tree>
+                </field>
+              </page>
+            </notebook>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <!--Esta vista tiene la particularidad de añadir código qweb
+    Lo primero que tiene es una referencia a id que no se va a mostrar en el card pero que es necesario para luego acceder
+    a él para mostrar la foto
+    
+    A continuación metemos templates, dentro indicará lo que se va a mostrar.
+    El card está indicado mediante t
+    
+    Dentro de cada card vamos a tener por un lado la imagen, que a su vez va a ser un enlace que si se pulsa se mostrará el formulario 
+    asociado al estudiante. Para que cargue la imagen debemos llamar a la función kanban_image indicando el modelo, el campo a cargar y
+    el id del estudiante al que nos estamos refiriendo, por eso fuera de templates tenemos el campo id referenciado para poder acceder a él
+    
+    Depués tenemos otro div con el nombre del estudiante que a su vez es un enlace, y que si lo pulsamos abrimos el formulario en el modo 
+    de edición
+    
+    Finalmente dentro de ese div tenemos una lista con la clase a la que pertenece el estudiante
+    
+    Por CSS se pueden modificar los estilos
+    
+    En la documentación de Odoo podemos ver todo lo que se podría hacer, qweb tiene muchísimas posibilidades-->
+    <record id="school.student_kanban" model="ir.ui.view">
+      <field name="name">school.student kanban</field>
+      <field name="model">school.student</field>
+      <field name="arch" type="xml">
+        <kanban default_group_by="classroom" on_create="quick_create"
+          quick_create_view="school.quick_create_student_form">
+          <field name="id"></field>
+          <field name="classroom"></field>
+          <templates>
+            <t t-name="kanban-box">
+              <div t-attf-class="oe_kanban_color_{{kanban_getcolor(record.classroom.raw_value)}} oe_kanban_global_click o_kanban_record_has_image_fill">
+                <a type="open">
+                  <img width="150" style="padding:5px" class="oe_kanban_image"
+                    t-att-src="kanban_image('school.student', 'photo', record.id.raw_value)"
+                    alt="student image"/>
+                </a>
+                <div t-attf-class="oe_kanban_content">
+                  <h4>
+                    <a type="edit">
+                      <field name="name"></field>
+                    </a>
+                  </h4>
+                  <ul>
+                    <li>Classroom:
+                      <field name="classroom"></field>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </t>
+          </templates>
+        </kanban>
+      </field>
+    </record>
+
+    <!--Formulario de creación rápida de estudiantes-->
+    <record id="school.quick_create_student_form" model="ir.ui.view">
+      <field name="name">school.student form quickcreate</field>
+      <field name="model">school.student</field>
+      <field name="arch" type="xml">
+        <form>
+            <group>
+              <field name="name"/>    
+              <field name="birth_year"/>    
+              <field name="classroom"/>    
+              <field name="level"/>    
+            </group>
+        </form>
+      </field>
+    </record>
+
+    <!-- La vista search no es tanto lo que veo como los criterios de búsqueda y funcionan tanto en la vista kanban como en la tree
+    Es fácil de hacer
+    
+    En el buscador veremos que nos permite buscar por nombre o DNI. Si metiese un número también nos daría la opción de buscar por 
+    año de nacimiento
+    
+    Criterios de búsqueda:
+    - Piodemos buscar por un campo de búsqueda
+    - Podemos hacer filtros predefinidos
+    - Podemos agrupar según un criterio
+    -->
+
+    <record id="school.student_search" model="ir.ui.view">
+      <field name="name">school.student search</field>
+      <field name="model">school.student</field>
+      <field name="arch" type="xml">
+        <search>
+          <field name="name"/>
+          <field name="dni"/>
+          <field name="birth_year" string="Min Year" filter_domain="[('birth_year','>=', self)]"/>
+          <field name="birth_year" string="Max Year" filter_domain="[('birth_year','&lt;', self)]"/>
+          <!-- Esto buscará los estudiantes cuyo año de nacimiento sea mayor o igual al introducido en el campo de búsqueda-->
+
+          <!--Vamos a añadir un filtro para que muestre todos los estudiantes mayores de edad... se visualiza en el botón filtros debajo del campo de búsqueda
+          Esto no es del todo correcto porque variará con el año pero es sólo un ejemplo-->
+          <filter name="adult" string="Adult students" domain="[('birth_year','&lt;=','2004')]"></filter>
+
+
+          <!-- Vamos a añadir un filtro de agrupación, por classroom
+          Podemos verlo en el botón al lado de filtros: Agrupar por-->
+          <filter name="group_by_classroom" string="Group by classroom" context="{'group_by':'classroom'}"></filter>
+        </search>
+      </field>
+    </record>
+
+
+    <record id="school.seminar_calendar" model="ir.ui.view">
+      <field name="name">school.seminar calendar</field>
+      <field name="model">school.seminar</field>
+      <field name="arch" type="xml">
+        <calendar string="Seminar calendar" date_start="date" date_stop="finish" color="classroom">
+        <!-- El color no lo elegimos, se calculará en función del identificador 
+        también se puede poner date_start y date_delay, indicando en este atributo la duración en horas, por lo que podría
+        tomar un field que indicase las horas por ejemplo date_delay="hours"
+        
+        Podemos establecer también cuánto dura un día, por defecto 8 horas, pero se puede cambiar.
+        También hay una opción mode, para mostrar en modo días, meses, semanas...
+        tenemos que crear el menú y el action-->
+          <field name="name"/>
+        </calendar>
+      </field>
+    </record>
 
     <!-- actions opening views on models -->
-<!--
-    <record model="ir.actions.act_window" id="school.action_window">
-      <field name="name">school window</field>
-      <field name="res_model">school.school</field>
+
+    <record model="ir.actions.act_window" id="school.action_student_window">
+      <field name="name">Alumnos</field>
+      <field name="res_model">school.student</field>
+      <field name="view_mode">tree,form,kanban</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="school.action_classroom_window">
+      <field name="name">Clases</field>
+      <field name="res_model">school.classroom</field>
       <field name="view_mode">tree,form</field>
     </record>
--->
+
+    <record model="ir.actions.act_window" id="school.action_teacher_window">
+      <field name="name">Profesores</field>
+      <field name="res_model">school.teacher</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="school.action_seminar_window">
+      <field name="name">Seminarios</field>
+      <field name="res_model">school.seminar</field>
+      <field name="view_mode">calendar,tree,form</field>
+    </record>
+
 
     <!-- server action to the one above -->
 <!--
@@ -41,20 +238,22 @@
 -->
 
     <!-- Top menu item -->
-<!--
-    <menuitem name="school" id="school.menu_root"/>
--->
+
+    <menuitem name="School" id="school.menu_root"/>
+
     <!-- menu categories -->
-<!--
-    <menuitem name="Menu 1" id="school.menu_1" parent="school.menu_root"/>
-    <menuitem name="Menu 2" id="school.menu_2" parent="school.menu_root"/>
--->
+
+    <menuitem name="Management" id="school.menu_1" parent="school.menu_root"/>
+
     <!-- actions -->
-<!--
-    <menuitem name="List" id="school.menu_1_list" parent="school.menu_1"
-              action="school.action_window"/>
-    <menuitem name="Server to list" id="school" parent="school.menu_2"
-              action="school.action_server"/>
--->
+
+    <menuitem name="Students" id="school.menu_student_list" parent="school.menu_1"
+      action="school.action_student_window"/>
+    <menuitem name="Classrooms" id="school.menu_classroom_list" parent="school.menu_1"
+      action="school.action_classroom_window"/>
+    <menuitem name="Teachers" id="school.menu_teacher_list" parent="school.menu_1"
+      action="school.action_teacher_window"/>
+    <menuitem name="Seminars" id="school.menu_seminars_list" parent="school.menu_1"
+      action="school.action_seminar_window"/>
   </data>
 </odoo>
