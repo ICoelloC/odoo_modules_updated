@@ -11,7 +11,7 @@
 
     <record id="classroom1" model="school.classroom">
       <field name="name">ASIR1</field>
-      <field name="teachers"></field>
+      <field name="teachers" eval="[(6,0,[ref('school.teacher1'),ref('school.teacher2')])]"></field>
     </record>
 
   </data>
