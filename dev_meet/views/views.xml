@@ -1,33 +1,88 @@
 <odoo>
   <data>
     <!-- explicit list view definition -->
-<!--
-    <record model="ir.ui.view" id="dev_meet.list">
-      <field name="name">dev_meet list</field>
-      <field name="model">dev_meet.dev_meet</field>
+
+    <record model="ir.ui.view" id="dev_meet.developer_list">
+      <field name="name">Developers</field>
+      <field name="model">dev_meet.developer</field>
       <field name="arch" type="xml">
         <tree>
+          <field name="dni"/>
+          <field name="nickname"/>
           <field name="name"/>
-          <field name="value"/>
-          <field name="value2"/>
+          <field name="email"/>
         </tree>
       </field>
     </record>
--->
+
+    <record model="ir.ui.view" id="dev_meet.technology_list">
+      <field name="name">Technologies</field>
+      <field name="model">dev_meet.technology</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="official_web"/>
+        </tree>
+      </field>
+    </record>
+
+
+    <record model="ir.ui.view" id="dev_meet.event_list">
+      <field name="name">Events</field>
+      <field name="model">dev_meet.event</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="start_date"/>
+          <field name="end_date"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="dev_meet.rooms_list">
+      <field name="name">Rooms</field>
+      <field name="model">dev_meet.room</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="room_number"/>
+          <field name="name"/>
+          <field name="capacity"/>
+        </tree>
+      </field>
+    </record>
+
 
     <!-- actions opening views on models -->
-<!--
-    <record model="ir.actions.act_window" id="dev_meet.action_window">
-      <field name="name">dev_meet window</field>
-      <field name="res_model">dev_meet.dev_meet</field>
+
+    <record model="ir.actions.act_window" id="dev_meet.action_developer_window">
+      <field name="name">Desarrolladores</field>
+      <field name="res_model">dev_meet.developer</field>
       <field name="view_mode">tree,form</field>
     </record>
--->
+
+    <record model="ir.actions.act_window" id="dev_meet.action_technology_window">
+      <field name="name">Tecnologías</field>
+      <field name="res_model">dev_meet.technology</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="dev_meet.action_event_window">
+      <field name="name">Eventos</field>
+      <field name="res_model">dev_meet.event</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="dev_meet.action_room_window">
+      <field name="name">Salas</field>
+      <field name="res_model">dev_meet.room</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
 
     <!-- server action to the one above -->
 <!--
     <record model="ir.actions.server" id="dev_meet.action_server">
-      <field name="name">dev_meet server</field>
+      <field name="name">DevMeet server</field>
       <field name="model_id" ref="model_dev_meet_dev_meet"/>
       <field name="state">code</field>
       <field name="code">
@@ -41,20 +96,26 @@
 -->
 
     <!-- Top menu item -->
-<!--
-    <menuitem name="dev_meet" id="dev_meet.menu_root"/>
--->
+
+    <menuitem name="DevMeet" id="dev_meet.menu_root"/>
+
     <!-- menu categories -->
-<!--
-    <menuitem name="Menu 1" id="dev_meet.menu_1" parent="dev_meet.menu_root"/>
-    <menuitem name="Menu 2" id="dev_meet.menu_2" parent="dev_meet.menu_root"/>
--->
+
+    <!-- <menuitem name="Tecnologías" id="dev_meet.menu_technology" parent="dev_meet.menu_root"/> -->
+
     <!-- actions -->
-<!--
-    <menuitem name="List" id="dev_meet.menu_1_list" parent="dev_meet.menu_1"
-              action="dev_meet.action_window"/>
-    <menuitem name="Server to list" id="dev_meet" parent="dev_meet.menu_2"
-              action="dev_meet.action_server"/>
--->
+
+    <menuitem name="Desarrolladores" id="dev_meet.menu_developers_list" parent="dev_meet.menu_root"
+              action="dev_meet.action_developer_window"/>
+
+    <menuitem name="Tecnologías" id="dev_meet.menu_technology_list" parent="dev_meet.menu_root"
+              action="dev_meet.action_technology_window"/>
+
+    <menuitem name="Eventos" id="dev_meet.menu_event_list" parent="dev_meet.menu_root"
+              action="dev_meet.action_event_window"/>
+
+    <menuitem name="Salas" id="dev_meet.menu_room_list" parent="dev_meet.menu_root"
+              action="dev_meet.action_room_window"/>
+
   </data>
 </odoo>

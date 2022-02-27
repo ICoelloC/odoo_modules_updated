@@ -1,2 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_dev_meet_dev_meet,dev_meet.dev_meet,model_dev_meet_dev_meet,base.group_user,1,1,1,1
+access_dev_meet_developer,dev_meet.developer,model_dev_meet_developer,base.group_user,1,1,1,1
+access_dev_meet_technology,dev_meet.technology,model_dev_meet_technology,base.group_user,1,1,1,1
+access_dev_meet_event,dev_meet.event,model_dev_meet_event,base.group_user,1,1,1,1
+access_dev_meet_room,dev_meet.room,model_dev_meet_room,base.group_user,1,1,1,1
