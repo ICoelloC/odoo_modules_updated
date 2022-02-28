@@ -24,7 +24,7 @@ class developer(models.Model):
 
     interested_technologies = fields.Many2many(string='Tecnologías interesadas', comodel_name='dev_meet.technology', relation='interested_technologies', help='Tecnpologías interesadas')
 
-    events_as_speaker = fields.One2many(string='Speaker en', comodel_name='dev_meet.event', inverse_name='speaker')
+    events_as_speaker = fields.Many2many(string='Speaker en', comodel_name='dev_meet.event', inverse_name='speaker')
 
 
     @api.constrains('dni')
@@ -71,7 +71,7 @@ class event(models.Model):
     room = fields.Many2one(string='Sala', comodel_name='dev_meet.room', help='Sala donde se realizará el evento')
     technologies = fields.Many2many(string='Tecnologías', comodel_name='dev_meet.technology', help='Tecnologías vistas en el evento')
 
-    speaker = fields.Many2one(string='Speakers', comodel_name='dev_meet.developer', help='Speaker del evento')
+    speaker = fields.Many2many(string='Speakers', comodel_name='dev_meet.developer', help='Speaker del evento')
 
 class room(models.Model):
     _name = 'dev_meet.room'
