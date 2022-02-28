@@ -6,12 +6,60 @@
       <field name="name">Developers</field>
       <field name="model">dev_meet.developer</field>
       <field name="arch" type="xml">
-        <tree>
+        <tree decoration-info="category=='1'" decoration-success="category=='2'" decoration-warning="category=='3'" decoration-muted="category=='4'" >
           <field name="dni"/>
           <field name="nickname"/>
           <field name="name"/>
           <field name="email"/>
+          <field name="category" invisible="True"/>
         </tree>
+      </field>
+    </record>
+
+    <record id="dev_meet.dev_kanban" model="ir.ui.view">
+      <field name="name">dev_meet.developer kanban</field>
+      <field name="model">dev_meet.developer</field>
+      <field name="arch" type="xml">
+        <kanban default_group_by="category" on_create="quick_create"
+          quick_create_view="dev_meet.quick_create_developer_form">
+          <field name="id"/>
+          <templates>
+            <t t-name="kanban-box">
+              <div t-attf-class="oe_kanban_color_{{kanban_getcolor(record.category.raw_value)}} oe_kanban_global_click o_kanban_record_has_image_fill">
+                <a type="open">
+                  <img width="150" style="padding:5px" class="oe_kanban_image"
+                    t-att-src="kanban_image('dev_meet.developer', 'photo', record.id.raw_value)"
+                    alt="developer image"/>
+                </a>
+                <div t-attf-class="oe_kanban_content">
+                  <h4>
+                    <field name="nickname"/>
+                    <a type="edit">
+                      <field name="name"/>
+                    </a>
+                  </h4>
+                 <field name="category" /> 
+                </div>
+              </div>
+            </t>
+          </templates>
+        </kanban>
+      </field>
+    </record>
+
+    <record id="dev_meet.quick_create_developer_form" model="ir.ui.view">
+      <field name="name">dev_meet.developer form quickcreate</field>
+      <field name="model">dev_meet.developer</field>
+      <field name="arch" type="xml">
+        <form>
+            <group>
+              <field name="photo"/>
+              <field name="dni"/>    
+              <field name="name"/>    
+              <field name="nickname"/>    
+              <field name="category"/>    
+            </group>
+        </form>
       </field>
     </record>
 
@@ -31,10 +79,11 @@
       <field name="name">Events</field>
       <field name="model">dev_meet.event</field>
       <field name="arch" type="xml">
-        <tree>
+        <tree decoration-success="presential=='True'" decoration-muted="presential=='False'">
           <field name="name"/>
           <field name="start_date"/>
           <field name="end_date"/>
+          <field name="presential" invisible="True"/>
         </tree>
       </field>
     </record>
@@ -57,7 +106,7 @@
     <record model="ir.actions.act_window" id="dev_meet.action_developer_window">
       <field name="name">Desarrolladores</field>
       <field name="res_model">dev_meet.developer</field>
-      <field name="view_mode">tree,form</field>
+      <field name="view_mode">tree,form,kanban</field>
     </record>
 
     <record model="ir.actions.act_window" id="dev_meet.action_technology_window">
@@ -69,7 +118,7 @@
     <record model="ir.actions.act_window" id="dev_meet.action_event_window">
       <field name="name">Eventos</field>
       <field name="res_model">dev_meet.event</field>
-      <field name="view_mode">tree,form</field>
+      <field name="view_mode">calendar,tree,form</field>
     </record>
 
     <record model="ir.actions.act_window" id="dev_meet.action_room_window">
@@ -80,20 +129,16 @@
 
 
     <!-- server action to the one above -->
-<!--
-    <record model="ir.actions.server" id="dev_meet.action_server">
-      <field name="name">DevMeet server</field>
-      <field name="model_id" ref="model_dev_meet_dev_meet"/>
-      <field name="state">code</field>
-      <field name="code">
-        action = {
-          "type": "ir.actions.act_window",
-          "view_mode": "tree,form",
-          "res_model": model._name,
-        }
-      </field>
-    </record>
--->
+
+<record id="dev_meet.event" model="ir.ui.view">
+  <field name="name">dev_meet.event calendar</field>
+  <field name="model">dev_meet.event</field>
+  <field name="arch" type="xml">
+    <calendar string="Calendar of events" date_start="start_date" date_stop="end_date" color="presential">
+      <field name="name"/>
+    </calendar>
+  </field>
+</record>
 
     <!-- Top menu item -->
 

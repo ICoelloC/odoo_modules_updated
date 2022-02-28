@@ -20,11 +20,15 @@ class developer(models.Model):
     email = fields.Char(string='Email', help='Correo electrónico')
     phone = fields.Char(string='Teléfono', help='Teléfono móvil')
 
+    photo = fields.Image(string='Foto', help='Foto del desarrollador')
+
+    category = fields.Selection([('1','JUNIOR'),('2','SENIOR'),('3','PROYECT MANAGER'),('4','ANALIST')],'JUNIOR',default='1')
+
     technologies_learned = fields.Many2many(string='Lenguajes aprendidos', comodel_name='dev_meet.technology', help='Tecnpologías aprendidas')
 
     interested_technologies = fields.Many2many(string='Tecnologías interesadas', comodel_name='dev_meet.technology', relation='interested_technologies', help='Tecnpologías interesadas')
 
-    events_as_speaker = fields.Many2many(string='Speaker en', comodel_name='dev_meet.event', inverse_name='speaker')
+    events_as_speaker = fields.Many2many(string='Speaker en', comodel_name='dev_meet.event')
 
 
     @api.constrains('dni')
@@ -56,29 +60,35 @@ class technology(models.Model):
 
     events = fields.Many2many(string='Eventos', comodel_name='dev_meet.event')
 
-    
-
 
 class event(models.Model):
     _name = 'dev_meet.event'
     _description = 'Events'
 
     name = fields.Char(string='Nombre', required=True, help='Nombre del evento')
-    start_date = fields.Datetime(string='Fecha de inicio', required=True, help='Fecha de inicio del evento')
-    end_date = fields.Datetime(string='Fecha de fin', required=True, help='Fecha de fin del evento')
-    presential = fields.Boolean(string='Es presencial', help='Evento presencial')
+    start_date = fields.Date(string='Fecha de inicio', required=True, help='Fecha de inicio del evento')
+    end_date = fields.Date(string='Fecha de fin', required=True, help='Fecha de fin del evento')
+    presential = fields.Boolean(string='Es presencial', help='Evento presencial', required=True, default=False)
 
-    room = fields.Many2one(string='Sala', comodel_name='dev_meet.room', help='Sala donde se realizará el evento')
+    room = fields.Many2one(string='Sala', comodel_name='dev_meet.room', help='Sala donde se realizará el evento' , attrs="{'invisible': [('presential','==','False')]}, {'required': [('presential','==','True')]}")
     technologies = fields.Many2many(string='Tecnologías', comodel_name='dev_meet.technology', help='Tecnologías vistas en el evento')
-
     speaker = fields.Many2many(string='Speakers', comodel_name='dev_meet.developer', help='Speaker del evento')
+
+    @api.constrains('start_date','end_date')
+    def _check_date(self):
+        for event in self:
+            if event.start_date < event.end_date:
+                _logger.info('fecha_válida')
+            else:
+                raise ValidationError('Intervalo de fechas incorrecto, la fecha de inicio no puede ser posterior a la de finalización.')
 
 class room(models.Model):
     _name = 'dev_meet.room'
     _description = 'Room'
 
-    room_number = fields.Integer(string='Número de sala', required=True, help='Número de sala')
     name = fields.Char(string='Nombre de la sala', required=True, help='Nombre de la sala')
+    location = fields.Char(string='Ubicación',help='Ubicación del evento')
+    room_number = fields.Integer(string='Número de sala', required=True, help='Número de sala')
     capacity = fields.Integer(string='Capacidad', required=True, help='Capacidad de la sala')
     
     events = fields.One2many(name='Eventos', comodel_name='dev_meet.event', help='Eventos que se realizarán en la sala', inverse_name='room')
