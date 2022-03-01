@@ -30,6 +30,8 @@ class developer(models.Model):
 
     events_as_speaker = fields.Many2many(string='Speaker en', comodel_name='dev_meet.event')
 
+    witnessed_events = fields.Many2many(string='Witnessed events', comodel_name='dev_meet.event', relation='witnessed_events')
+
 
     @api.constrains('dni')
     def _check_dni(self):
@@ -73,6 +75,8 @@ class event(models.Model):
     room = fields.Many2one(string='Sala', comodel_name='dev_meet.room', help='Sala donde se realizará el evento' """ , attrs="{'column-invisible': [('presential','==',False)]}, {'column-visible': [('presential','==',True)]}" """)
     technologies = fields.Many2many(string='Tecnologías', comodel_name='dev_meet.technology', help='Tecnologías vistas en el evento')
     speaker = fields.Many2many(string='Speakers', comodel_name='dev_meet.developer', help='Speaker del evento')
+
+    developers = fields.Many2many(string='Developers', comodel_name='dev_meet.developer', relation='witnessed_events')
 
     @api.constrains('start_date','end_date')
     def _check_date(self):

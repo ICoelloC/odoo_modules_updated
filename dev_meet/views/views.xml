@@ -1,364 +1,431 @@
 <odoo>
-  <data>
-    <!-- explicit list view definition -->
+    <data>
+      <!-- explicit list view definition -->
+  
+  <!-- VISTAS DE DEVELOPER -->
+  
+      <record model="ir.ui.view" id="dev_meet.developer_list">
+        <field name="name">Developers</field>
+        <field name="model">dev_meet.developer</field>
+        <field name="arch" type="xml">
+          <tree decoration-info="category=='1'" decoration-success="category=='2'" decoration-warning="category=='3'" decoration-muted="category=='4'" >
+            <field name="dni"/>
+            <field name="nickname"/>
+            <field name="name"/>
+            <field name="email"/>
+            <field name="category" invisible="True"/>
+          </tree>
+        </field>
+      </record>
 
-<!-- VISTAS DE DEVELOPER -->
+      <record model="ir.ui.view" id="dev_meet.developer_form">
+        <field name="name">dev_meet.developer form</field>
+        <field name="model">dev_meet.developer</field>
+        <field name="arch" type="xml">
+          <form>
+            <sheet> 
+              <field name="photo" widget="image" class="oe_avatar"/>
+              <group>
+                <group>
+                  <separator string="Personal Data"></separator>
+                  <field name="dni" />
+                  <field name="name"/>
+                  <field name="nickname"/>
+                </group>
+                <group>
+                  <separator string="Contact Data"></separator>
+                  <field name="email" />
+                  <field name="phone" />
+                  <!--<field name="classroom" 
+                         attrs="{'invisible':[('is_student','=',False)],
+                                 'required':[('is_student','=',True)]}"/>-->
+                </group>
 
-    <record model="ir.ui.view" id="dev_meet.developer_list">
-      <field name="name">Developers</field>
-      <field name="model">dev_meet.developer</field>
-      <field name="arch" type="xml">
-        <tree decoration-info="category=='1'" decoration-success="category=='2'" decoration-warning="category=='3'" decoration-muted="category=='4'" >
-          <field name="dni"/>
-          <field name="nickname"/>
-          <field name="name"/>
-          <field name="email"/>
-          <field name="category" invisible="True"/>
-        </tree>
-      </field>
-    </record>
+                <group>
+                    <separator string="Work type"></separator>
+                    <field name="category"/>
+                  </group>
 
-    <record id="dev_meet.dev_kanban" model="ir.ui.view">
-      <field name="name">dev_meet.developer kanban</field>
-      <field name="model">dev_meet.developer</field>
-      <field name="arch" type="xml">
-        <kanban default_group_by="category" on_create="quick_create"
-          quick_create_view="dev_meet.quick_create_developer_form">
-          <field name="id"/>
-          <templates>
-            <t t-name="kanban-box">
-              <div t-attf-class="oe_kanban_color_{{kanban_getcolor(record.category.raw_value)}} oe_kanban_global_click o_kanban_record_has_image_fill">
-                <a type="open">
-                  <img width="150" style="padding:5px" class="oe_kanban_image"
-                    t-att-src="kanban_image('dev_meet.developer', 'photo', record.id.raw_value)"
-                    alt="developer image"/>
-                </a>
-                <div t-attf-class="oe_kanban_content">
-                  <h4>
-                    <field name="nickname"/>
-                    <a type="edit">
+              </group>
+              <notebook>
+                <page string="Technologies learned">
+                  <field name="technologies_learned">
+                    <tree>
                       <field name="name"/>
-                    </a>
-                  </h4>
-                 <field name="category" /> 
-                </div>
-              </div>
-            </t>
-          </templates>
-        </kanban>
-      </field>
-    </record>
+                    </tree>
+                  </field>
+                </page>
 
-    <record id="dev_meet.quick_create_developer_form" model="ir.ui.view">
-      <field name="name">dev_meet.developer form quickcreate</field>
-      <field name="model">dev_meet.developer</field>
-      <field name="arch" type="xml">
-        <form>
-            <group>
-              <field name="photo"/>
-              <field name="dni"/>    
-              <field name="name"/>    
-              <field name="nickname"/>    
-              <field name="category"/>    
-            </group>
-        </form>
-      </field>
-    </record>
+                <page string="Interested technologies">
+                    <field name="interested_technologies">
+                      <tree>
+                        <field name="name"/>
+                      </tree>
+                    </field>
+                </page>
 
-    <record id="dev_meet.developer_search" model="ir.ui.view">
-      <field name="name">dev_meet.developer search</field>
-      <field name="model">dev_meet.developer</field>
-      <field name="arch" type="xml">
-        <search>
-          <field name="dni"/>
-          <field name="name"/>
-          <field name="nickname"/>
-          <field name="email"/>
-          <field name="phone"/>
-          <field name="category"/>
-          <filter name="group_by_category" string="Group by Category" context="{'group_by':'category'}"/>
-        </search>
-      </field>
-    </record>
-<!-- VISTAS DE DEVELOPER -->
+                <page string="Events as speaker">
+                    <field name="events_as_speaker" readonly="True" >
+                      <tree>
+                        <field name="name"/>
+                      </tree>
+                    </field>
+                </page>
 
-<!-- VISTAS DE TECHNOLOGY -->
-
-    <record model="ir.ui.view" id="dev_meet.technology_list">
-      <field name="name">Technologies</field>
-      <field name="model">dev_meet.technology</field>
-      <field name="arch" type="xml">
-        <tree>
-          <field name="name"/>
-          <field name="official_web"/>
-        </tree>
-      </field>
-    </record>
-
-    <record id="dev_meet.tec_kanban" model="ir.ui.view">
-      <field name="name">dev_meet.technology kanban</field>
-      <field name="model">dev_meet.technology</field>
-      <field name="arch" type="xml">
-        <kanban on_create="quick_create"
-          quick_create_view="dev_meet.quick_create_technology_form">
-          <field name="id"/>
-          <templates>
-            <t t-name="kanban-box">
-              <div t-attf-class="oe_kanban_color_{{kanban_getcolor(record.name.raw_value)}} oe_kanban_global_click o_kanban_record_has_image_fill">
-                <a type="open">
-                  <img width="150" style="padding:5px" class="oe_kanban_image"
-                    t-att-src="kanban_image('dev_meet.technology', 'logo', record.id.raw_value)"
-                    alt="developer image"/>
-                </a>
-                <div t-attf-class="oe_kanban_content">
-                  <h4>
-                    <a type="edit">
-                      <field name="name"/>
-                    </a>
-                  </h4>
-                 <field name="official_web"/> 
-                </div>
-              </div>
-            </t>
-          </templates>
-        </kanban>
-      </field>
-    </record>
-
-    <record id="dev_meet.quick_create_technology_form" model="ir.ui.view">
-      <field name="name">dev_meet.technology form quickcreate</field>
-      <field name="model">dev_meet.technology</field>
-      <field name="arch" type="xml">
-        <form>
-            <group>
-              <field name="logo"/>  
-              <field name="name"/>    
-              <field name="official_web"/>
-            </group>
-        </form>
-      </field>
-    </record>
-
-    <record id="dev_meet.technology" model="ir.ui.view">
-      <field name="name">dev_meet.technology search</field>
-      <field name="model">dev_meet.technology</field>
-      <field name="arch" type="xml">
-        <search>
-          <field name="name"/>
-        </search>
-      </field>
-    </record>
-
-<!-- VISTAS DE TECHNOLOGY -->
-
-<!-- VISTAS DE EVENT -->
-
-    <record model="ir.ui.view" id="dev_meet.event_list">
-      <field name="name">Events</field>
-      <field name="model">dev_meet.event</field>
-      <field name="arch" type="xml">
-        <tree decoration-success="presential==True" decoration-muted="presential==False">
-          <field name="name"/>
-          <field name="start_date"/>
-          <field name="end_date"/>
-          <field name="presential" invisible="True"/>
-        </tree>
-      </field>
-    </record>
-
-    <record id="dev_meet.event_kanban" model="ir.ui.view">
-      <field name="name">dev_meet.event kanban</field>
-      <field name="model">dev_meet.event</field>
-      <field name="arch" type="xml">
-        <kanban default_group_by="presential" on_create="quick_create"
-          quick_create_view="dev_meet.quick_create_event_form">
-          <field name="id"/>
-          <templates>
-            <t t-name="kanban-box">
-              <div>
-                <div t-attf-class="oe_kanban_content">
-                  <h4>
-                    <a type="edit">
-                      <field name="name"/>
-                    </a>
-                  </h4>
-                 <field name="start_date"/>
-                 <field name="end_date"/>
-                </div>
-              </div>
-            </t>
-          </templates>
-        </kanban>
-      </field>
-    </record>
-
-    <record id="dev_meet.quick_create_event_form" model="ir.ui.view">
-      <field name="name">dev_meet.event form quickcreate</field>
-      <field name="model">dev_meet.event</field>
-      <field name="arch" type="xml">
-        <form>
-            <group>  
-              <field name="name"/>    
-              <field name="start_date"/>    
-              <field name="end_date"/>    
-            </group>
-        </form>
-      </field>
-    </record>
-
-    <record id="dev_meet.event" model="ir.ui.view">
-      <field name="name">dev_meet.event search</field>
-      <field name="model">dev_meet.event</field>
-      <field name="arch" type="xml">
-        <search>
-          <field name="name"/>
-        </search>
-      </field>
-    </record>
-
-<!-- VISTAS DE EVENT -->
-
-<!-- VISTAS DE ROOM -->
-    <record model="ir.ui.view" id="dev_meet.rooms_list">
-      <field name="name">Rooms</field>
-      <field name="model">dev_meet.room</field>
-      <field name="arch" type="xml">
-        <tree>
-          <field name="room_number"/>
-          <field name="name"/>
-          <field name="capacity"/>
-        </tree>
-      </field>
-    </record>
-
-    <record id="dev_meet.room_kanban" model="ir.ui.view">
-      <field name="name">dev_meet.room kanban</field>
-      <field name="model">dev_meet.room</field>
-      <field name="arch" type="xml">
-        <kanban default_group_by="location" on_create="quick_create"
-          quick_create_view="dev_meet.quick_create_room_form">
-          <field name="id"/>
-          <templates>
-            <t t-name="kanban-box">
-              <div t-attf-class="oe_kanban_color_{{kanban_getcolor(record.location.raw_value)}} oe_kanban_global_click o_kanban_record_has_image_fill">
-                <div t-attf-class="oe_kanban_content">
-                  <h1>
-                    <field name="location" invisible="True"/>
-                    <a type="edit">
-                      <field name="name"/>
-                    </a>
-                  </h1>
-                  <h3>
-                    <p>Número de Sala: 
+                <page string="Witnessed events">
+                    <field name="witnessed_events" readonly="True">
+                      <tree>
+                        <field name="name"/>
+                      </tree>
+                    </field>
+                </page>
+              </notebook>
+            </sheet>
+          </form>
+        </field>
+      </record>
+  
+      <record id="dev_meet.dev_kanban" model="ir.ui.view">
+        <field name="name">dev_meet.developer kanban</field>
+        <field name="model">dev_meet.developer</field>
+        <field name="arch" type="xml">
+          <kanban default_group_by="category" on_create="quick_create"
+            quick_create_view="dev_meet.quick_create_developer_form">
+            <field name="id"/>
+            <templates>
+              <t t-name="kanban-box">
+                <div t-attf-class="oe_kanban_color_{{kanban_getcolor(record.category.raw_value)}} oe_kanban_global_click o_kanban_record_has_image_fill">
+                  <a type="open">
+                    <img width="150" style="padding:5px" class="oe_kanban_image"
+                      t-att-src="kanban_image('dev_meet.developer', 'photo', record.id.raw_value)"
+                      alt="developer image"/>
+                  </a>
+                  <div t-attf-class="oe_kanban_content">
+                    <h4>
+                      <field name="nickname"/>
                       <a type="edit">
-                        <field name="room_number"/>
+                        <field name="name"/>
                       </a>
-                    </p>
-                  </h3>
-                  <h4>
-                    <p>Capacidad: 
-                      <a type="edit">
-                        <field name="capacity"/>
-                      </a>
-                    </p>
-                  </h4>
+                    </h4>
+                   <field name="category" /> 
+                  </div>
                 </div>
-              </div>
-            </t>
-          </templates>
-        </kanban>
-      </field>
-    </record>
-
-    <record id="dev_meet.quick_create_room_form" model="ir.ui.view">
-      <field name="name">dev_meet.room form quickcreate</field>
-      <field name="model">dev_meet.room</field>
-      <field name="arch" type="xml">
-        <form>
-            <group>
-              <field name="room_number"/>
-              <field name="name"/>    
-              <field name="location"/>
-            </group>
-        </form>
-      </field>
-    </record>
-    
-    <record id="dev_meet.room" model="ir.ui.view">
-      <field name="name">dev_meet.room search</field>
-      <field name="model">dev_meet.room</field>
-      <field name="arch" type="xml">
-        <search>
-          <field name="name"/>
-          <field name="location"/>
-          <field name="capacity"/>
-          <field name="room_number"/>
-          <filter name="group_by_location" string="Group by Location" context="{'group_by':'location'}"/>
-        </search>
-      </field>
-    </record>
-
-<!-- VISTAS DE ROOM -->
-    <!-- actions opening views on models -->
-
-    <record model="ir.actions.act_window" id="dev_meet.action_developer_window">
-      <field name="name">Desarrolladores</field>
-      <field name="res_model">dev_meet.developer</field>
-      <field name="view_mode">tree,form,kanban</field>
-    </record>
-
-    <record model="ir.actions.act_window" id="dev_meet.action_technology_window">
-      <field name="name">Tecnologías</field>
-      <field name="res_model">dev_meet.technology</field>
-      <field name="view_mode">tree,form,kanban</field>
-    </record>
-
-    <record model="ir.actions.act_window" id="dev_meet.action_event_window">
-      <field name="name">Eventos</field>
-      <field name="res_model">dev_meet.event</field>
-      <field name="view_mode">calendar,tree,form,kanban</field>
-    </record>
-
-    <record model="ir.actions.act_window" id="dev_meet.action_room_window">
-      <field name="name">Salas</field>
-      <field name="res_model">dev_meet.room</field>
-      <field name="view_mode">tree,form,kanban</field>
-    </record>
-
-
-    <!-- server action to the one above -->
-
-<record id="dev_meet.event" model="ir.ui.view">
-  <field name="name">dev_meet.event calendar</field>
-  <field name="model">dev_meet.event</field>
-  <field name="arch" type="xml">
-    <calendar string="Calendar of events" date_start="start_date" date_stop="end_date" color="presential">
-      <field name="name"/>
-    </calendar>
-  </field>
-</record>
-
-    <!-- Top menu item -->
-
-    <menuitem name="DevMeet" id="dev_meet.menu_root"/>
-
-    <!-- menu categories -->
-
-    <!-- <menuitem name="Tecnologías" id="dev_meet.menu_technology" parent="dev_meet.menu_root"/> -->
-
-    <!-- actions -->
-
-    <menuitem name="Desarrolladores" id="dev_meet.menu_developers_list" parent="dev_meet.menu_root"
-              action="dev_meet.action_developer_window"/>
-
-    <menuitem name="Tecnologías" id="dev_meet.menu_technology_list" parent="dev_meet.menu_root"
-              action="dev_meet.action_technology_window"/>
-
-    <menuitem name="Eventos" id="dev_meet.menu_event_list" parent="dev_meet.menu_root"
-              action="dev_meet.action_event_window"/>
-
-    <menuitem name="Salas" id="dev_meet.menu_room_list" parent="dev_meet.menu_root"
-              action="dev_meet.action_room_window"/>
-
-  </data>
-</odoo>
+              </t>
+            </templates>
+          </kanban>
+        </field>
+      </record>
+  
+      <record id="dev_meet.quick_create_developer_form" model="ir.ui.view">
+        <field name="name">dev_meet.developer form quickcreate</field>
+        <field name="model">dev_meet.developer</field>
+        <field name="arch" type="xml">
+          <form>
+              <group>
+                <field name="photo"/>
+                <field name="dni"/>    
+                <field name="name"/>    
+                <field name="nickname"/>    
+                <field name="category"/>    
+              </group>
+          </form>
+        </field>
+      </record>
+  
+      <record id="dev_meet.developer_search" model="ir.ui.view">
+        <field name="name">dev_meet.developer search</field>
+        <field name="model">dev_meet.developer</field>
+        <field name="arch" type="xml">
+          <search>
+            <field name="dni"/>
+            <field name="name"/>
+            <field name="nickname"/>
+            <field name="email"/>
+            <field name="phone"/>
+            <field name="category"/>
+            <filter name="group_by_category" string="Group by Category" context="{'group_by':'category'}"/>
+          </search>
+        </field>
+      </record>
+  <!-- VISTAS DE DEVELOPER -->
+  
+  <!-- VISTAS DE TECHNOLOGY -->
+  
+      <record model="ir.ui.view" id="dev_meet.technology_list">
+        <field name="name">Technologies</field>
+        <field name="model">dev_meet.technology</field>
+        <field name="arch" type="xml">
+          <tree>
+            <field name="name"/>
+            <field name="official_web"/>
+          </tree>
+        </field>
+      </record>
+  
+      <record id="dev_meet.tec_kanban" model="ir.ui.view">
+        <field name="name">dev_meet.technology kanban</field>
+        <field name="model">dev_meet.technology</field>
+        <field name="arch" type="xml">
+          <kanban on_create="quick_create"
+            quick_create_view="dev_meet.quick_create_technology_form">
+            <field name="id"/>
+            <templates>
+              <t t-name="kanban-box">
+                <div t-attf-class="oe_kanban_color_{{kanban_getcolor(record.name.raw_value)}} oe_kanban_global_click o_kanban_record_has_image_fill">
+                  <a type="open">
+                    <img width="150" style="padding:5px" class="oe_kanban_image"
+                      t-att-src="kanban_image('dev_meet.technology', 'logo', record.id.raw_value)"
+                      alt="developer image"/>
+                  </a>
+                  <div t-attf-class="oe_kanban_content">
+                    <h4>
+                      <a type="edit">
+                        <field name="name"/>
+                      </a>
+                    </h4>
+                   <field name="official_web"/> 
+                  </div>
+                </div>
+              </t>
+            </templates>
+          </kanban>
+        </field>
+      </record>
+  
+      <record id="dev_meet.quick_create_technology_form" model="ir.ui.view">
+        <field name="name">dev_meet.technology form quickcreate</field>
+        <field name="model">dev_meet.technology</field>
+        <field name="arch" type="xml">
+          <form>
+              <group>
+                <field name="logo"/>  
+                <field name="name"/>    
+                <field name="official_web"/>
+              </group>
+          </form>
+        </field>
+      </record>
+  
+      <record id="dev_meet.technology" model="ir.ui.view">
+        <field name="name">dev_meet.technology search</field>
+        <field name="model">dev_meet.technology</field>
+        <field name="arch" type="xml">
+          <search>
+            <field name="name"/>
+          </search>
+        </field>
+      </record>
+  
+  <!-- VISTAS DE TECHNOLOGY -->
+  
+  <!-- VISTAS DE EVENT -->
+  
+      <record model="ir.ui.view" id="dev_meet.event_list">
+        <field name="name">Events</field>
+        <field name="model">dev_meet.event</field>
+        <field name="arch" type="xml">
+          <tree decoration-success="presential==True" decoration-muted="presential==False">
+            <field name="name"/>
+            <field name="start_date"/>
+            <field name="end_date"/>
+            <field name="presential" invisible="True"/>
+          </tree>
+        </field>
+      </record>
+  
+      <record id="dev_meet.event_kanban" model="ir.ui.view">
+        <field name="name">dev_meet.event kanban</field>
+        <field name="model">dev_meet.event</field>
+        <field name="arch" type="xml">
+          <kanban default_group_by="presential" on_create="quick_create"
+            quick_create_view="dev_meet.quick_create_event_form">
+            <field name="id"/>
+            <templates>
+              <t t-name="kanban-box">
+                <div>
+                  <div t-attf-class="oe_kanban_content">
+                    <h4>
+                      <a type="edit">
+                        <field name="name"/>
+                      </a>
+                    </h4>
+                   <field name="start_date"/>
+                   <field name="end_date"/>
+                  </div>
+                </div>
+              </t>
+            </templates>
+          </kanban>
+        </field>
+      </record>
+  
+      <record id="dev_meet.quick_create_event_form" model="ir.ui.view">
+        <field name="name">dev_meet.event form quickcreate</field>
+        <field name="model">dev_meet.event</field>
+        <field name="arch" type="xml">
+          <form>
+              <group>  
+                <field name="name"/>    
+                <field name="start_date"/>    
+                <field name="end_date"/>    
+              </group>
+          </form>
+        </field>
+      </record>
+  
+      <record id="dev_meet.event" model="ir.ui.view">
+        <field name="name">dev_meet.event search</field>
+        <field name="model">dev_meet.event</field>
+        <field name="arch" type="xml">
+          <search>
+            <field name="name"/>
+          </search>
+        </field>
+      </record>
+  
+  <!-- VISTAS DE EVENT -->
+  
+  <!-- VISTAS DE ROOM -->
+      <record model="ir.ui.view" id="dev_meet.rooms_list">
+        <field name="name">Rooms</field>
+        <field name="model">dev_meet.room</field>
+        <field name="arch" type="xml">
+          <tree>
+            <field name="room_number"/>
+            <field name="name"/>
+            <field name="capacity"/>
+          </tree>
+        </field>
+      </record>
+  
+      <record id="dev_meet.room_kanban" model="ir.ui.view">
+        <field name="name">dev_meet.room kanban</field>
+        <field name="model">dev_meet.room</field>
+        <field name="arch" type="xml">
+          <kanban default_group_by="location" on_create="quick_create"
+            quick_create_view="dev_meet.quick_create_room_form">
+            <field name="id"/>
+            <templates>
+              <t t-name="kanban-box">
+                <div t-attf-class="oe_kanban_color_{{kanban_getcolor(record.location.raw_value)}} oe_kanban_global_click o_kanban_record_has_image_fill">
+                  <div t-attf-class="oe_kanban_content">
+                    <h1>
+                      <field name="location" invisible="True"/>
+                      <a type="edit">
+                        <field name="name"/>
+                      </a>
+                    </h1>
+                    <h3>
+                      <p>Número de Sala: 
+                        <a type="edit">
+                          <field name="room_number"/>
+                        </a>
+                      </p>
+                    </h3>
+                    <h4>
+                      <p>Capacidad: 
+                        <a type="edit">
+                          <field name="capacity"/>
+                        </a>
+                      </p>
+                    </h4>
+                  </div>
+                </div>
+              </t>
+            </templates>
+          </kanban>
+        </field>
+      </record>
+  
+      <record id="dev_meet.quick_create_room_form" model="ir.ui.view">
+        <field name="name">dev_meet.room form quickcreate</field>
+        <field name="model">dev_meet.room</field>
+        <field name="arch" type="xml">
+          <form>
+              <group>
+                <field name="room_number"/>
+                <field name="name"/>    
+                <field name="location"/>
+              </group>
+          </form>
+        </field>
+      </record>
+      
+      <record id="dev_meet.room" model="ir.ui.view">
+        <field name="name">dev_meet.room search</field>
+        <field name="model">dev_meet.room</field>
+        <field name="arch" type="xml">
+          <search>
+            <field name="name"/>
+            <field name="location"/>
+            <field name="capacity"/>
+            <field name="room_number"/>
+            <filter name="group_by_location" string="Group by Location" context="{'group_by':'location'}"/>
+          </search>
+        </field>
+      </record>
+  
+  <!-- VISTAS DE ROOM -->
+      <!-- actions opening views on models -->
+  
+      <record model="ir.actions.act_window" id="dev_meet.action_developer_window">
+        <field name="name">Desarrolladores</field>
+        <field name="res_model">dev_meet.developer</field>
+        <field name="view_mode">tree,form,kanban</field>
+      </record>
+  
+      <record model="ir.actions.act_window" id="dev_meet.action_technology_window">
+        <field name="name">Tecnologías</field>
+        <field name="res_model">dev_meet.technology</field>
+        <field name="view_mode">tree,form,kanban</field>
+      </record>
+  
+      <record model="ir.actions.act_window" id="dev_meet.action_event_window">
+        <field name="name">Eventos</field>
+        <field name="res_model">dev_meet.event</field>
+        <field name="view_mode">calendar,tree,form,kanban</field>
+      </record>
+  
+      <record model="ir.actions.act_window" id="dev_meet.action_room_window">
+        <field name="name">Salas</field>
+        <field name="res_model">dev_meet.room</field>
+        <field name="view_mode">tree,form,kanban</field>
+      </record>
+  
+  
+      <!-- server action to the one above -->
+  
+  <record id="dev_meet.event" model="ir.ui.view">
+    <field name="name">dev_meet.event calendar</field>
+    <field name="model">dev_meet.event</field>
+    <field name="arch" type="xml">
+      <calendar string="Calendar of events" date_start="start_date" date_stop="end_date" color="presential">
+        <field name="name"/>
+      </calendar>
+    </field>
+  </record>
+  
+      <!-- Top menu item -->
+  
+      <menuitem name="DevMeet" id="dev_meet.menu_root"/>
+  
+      <!-- menu categories -->
+  
+      <!-- <menuitem name="Tecnologías" id="dev_meet.menu_technology" parent="dev_meet.menu_root"/> -->
+  
+      <!-- actions -->
+  
+      <menuitem name="Desarrolladores" id="dev_meet.menu_developers_list" parent="dev_meet.menu_root"
+                action="dev_meet.action_developer_window"/>
+  
+      <menuitem name="Tecnologías" id="dev_meet.menu_technology_list" parent="dev_meet.menu_root"
+                action="dev_meet.action_technology_window"/>
+  
+      <menuitem name="Eventos" id="dev_meet.menu_event_list" parent="dev_meet.menu_root"
+                action="dev_meet.action_event_window"/>
+  
+      <menuitem name="Salas" id="dev_meet.menu_room_list" parent="dev_meet.menu_root"
+                action="dev_meet.action_room_window"/>
+  
+    </data>
+  </odoo>
