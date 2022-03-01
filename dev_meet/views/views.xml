@@ -260,6 +260,62 @@
           </tree>
         </field>
       </record>
+
+      <record model="ir.ui.view" id="dev_meet.event_form">
+        <field name="name">dev_meet.event form</field>
+        <field name="model">dev_meet.event</field>
+        <field name="arch" type="xml">
+          <form>
+            <sheet>
+              <group>
+                <group>
+                  <separator string="Event Data"></separator>
+                    <field name="name"/>
+                    <field name="presential"/>
+                </group>
+                <group>
+                  <separator string="Event Date"></separator>
+                  <field name="start_date" />
+                  <field name="end_date" />
+                </group>
+                <group>
+                    <separator string="Location"></separator>
+                      <field name="room"
+                      attrs="{'invisible':[('presential','=',False)],
+                                 'required':[('presential','=',True)]}"/>
+                  </group>
+              </group>
+              <notebook>
+                <page string="Technologies">
+                  <field name="technologies">
+                    <tree>
+                      <field name="name"/>
+                    </tree>
+                  </field>
+                </page>
+
+                <page string="Speakers">
+                    <field name="speaker">
+                      <tree>
+                        <field name="nickname"/>
+                        <field name="name"/>
+                      </tree>
+                    </field>
+                </page>
+
+                <page string="Developers on the event">
+                    <field name="developers">
+                      <tree>
+                        <field name="nickname"/>
+                        <field name="name"/>
+                      </tree>
+                    </field>
+                </page>
+              </notebook>
+            </sheet>
+          </form>
+        </field>
+      </record>
   
       <record id="dev_meet.event_kanban" model="ir.ui.view">
         <field name="name">dev_meet.event kanban</field>
