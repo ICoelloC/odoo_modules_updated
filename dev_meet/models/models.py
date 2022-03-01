@@ -92,7 +92,7 @@ class room(models.Model):
 
     name = fields.Char(string='Nombre de la sala', required=True, help='Nombre de la sala')
     location = fields.Char(string='Ubicación',help='Ubicación del evento')
-    room_number = fields.Integer(string='Número de sala', required=True, help='Número de sala')
-    capacity = fields.Integer(string='Capacidad', required=True, help='Capacidad de la sala')
+    room_number = fields.Integer(string='Número de sala', help='Número de sala')
+    capacity = fields.Integer(string='Capacidad', help='Capacidad de la sala')
     
     events = fields.One2many(name='Eventos', comodel_name='dev_meet.event', help='Eventos que se realizarán en la sala', inverse_name='room')
