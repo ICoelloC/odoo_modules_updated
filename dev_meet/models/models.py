@@ -22,7 +22,7 @@ class developer(models.Model):
 
     photo = fields.Image(string='Foto', help='Foto del desarrollador')
 
-    category = fields.Selection([('1','JUNIOR'),('2','SENIOR'),('3','PROYECT MANAGER'),('4','ANALIST')],'JUNIOR',default='1')
+    category = fields.Selection([('1','JUNIOR'),('2','SENIOR'),('3','PROYECT MANAGER'),('4','ANALIST')],'Category',default='1')
 
     technologies_learned = fields.Many2many(string='Lenguajes aprendidos', comodel_name='dev_meet.technology', help='Tecnpologías aprendidas')
 
@@ -70,7 +70,7 @@ class event(models.Model):
     end_date = fields.Date(string='Fecha de fin', required=True, help='Fecha de fin del evento')
     presential = fields.Boolean(string='Es presencial', help='Evento presencial', required=True, default=False)
 
-    room = fields.Many2one(string='Sala', comodel_name='dev_meet.room', help='Sala donde se realizará el evento' """ , attrs="{'invisible': [('presential','==','False')]}, {'required': [('presential','==','True')]}" """)
+    room = fields.Many2one(string='Sala', comodel_name='dev_meet.room', help='Sala donde se realizará el evento' """ , attrs="{'column-invisible': [('presential','==',False)]}, {'column-visible': [('presential','==',True)]}" """)
     technologies = fields.Many2many(string='Tecnologías', comodel_name='dev_meet.technology', help='Tecnologías vistas en el evento')
     speaker = fields.Many2many(string='Speakers', comodel_name='dev_meet.developer', help='Speaker del evento')
 
