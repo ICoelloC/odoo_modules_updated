@@ -72,7 +72,7 @@ class event(models.Model):
     end_date = fields.Date(string='Fecha de fin', required=True, help='Fecha de fin del evento')
     presential = fields.Boolean(string='Es presencial', help='Evento presencial', required=True, default=False)
 
-    room = fields.Many2one(string='Sala', comodel_name='dev_meet.room', help='Sala donde se realizará el evento' """ , attrs="{'column-invisible': [('presential','==',False)]}, {'column-visible': [('presential','==',True)]}" """)
+    room = fields.Many2one(string='Sala', comodel_name='dev_meet.room', help='Sala donde se realizará el evento')
     technologies = fields.Many2many(string='Tecnologías', comodel_name='dev_meet.technology', help='Tecnologías vistas en el evento')
     speaker = fields.Many2many(string='Speakers', comodel_name='dev_meet.developer', help='Speaker del evento')
 

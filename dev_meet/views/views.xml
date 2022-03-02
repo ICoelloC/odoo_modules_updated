@@ -356,6 +356,16 @@
           </form>
         </field>
       </record>
+
+      <record id="dev_meet.event" model="ir.ui.view">
+        <field name="name">dev_meet.event calendar</field>
+        <field name="model">dev_meet.event</field>
+        <field name="arch" type="xml">
+          <calendar string="Calendar of events" date_start="start_date" date_stop="end_date" color="presential">
+            <field name="name"/>
+          </calendar>
+        </field>
+      </record>
   
       <record id="dev_meet.event" model="ir.ui.view">
         <field name="name">dev_meet.event search</field>
@@ -500,7 +510,7 @@
       <record model="ir.actions.act_window" id="dev_meet.action_event_window">
         <field name="name">Eventos</field>
         <field name="res_model">dev_meet.event</field>
-        <field name="view_mode">calendar,tree,form,kanban</field>
+        <field name="view_mode">tree,form,calendar,kanban</field>
       </record>
   
       <record model="ir.actions.act_window" id="dev_meet.action_room_window">
@@ -512,15 +522,7 @@
   
       <!-- server action to the one above -->
   
-  <record id="dev_meet.event" model="ir.ui.view">
-    <field name="name">dev_meet.event calendar</field>
-    <field name="model">dev_meet.event</field>
-    <field name="arch" type="xml">
-      <calendar string="Calendar of events" date_start="start_date" date_stop="end_date" color="presential">
-        <field name="name"/>
-      </calendar>
-    </field>
-  </record>
+  
   
       <!-- Top menu item -->
   

@@ -1,58 +1,25 @@
 <odoo>
     <data>
-        <record id='eventVoltsillam' model='dev_meet.event'>
-            <field name='name'>Voltsillam</field>
-            <field name='start_date'>3/27/2021</field>
-            <field name='end_date'>6/24/2021</field>
-            <field name='presential'>false</field>
-        </record>
-        <record id='eventToughjoyfax' model='dev_meet.event'>
+        <record id='event1' model='dev_meet.event'>
             <field name='name'>Toughjoyfax</field>
-            <field name='start_date'>10/2/2021</field>
-            <field name='end_date'>6/8/2021</field>
-            <field name='presential'>false</field>
+            <field name='start_date'>2022-03-01</field>
+            <field name='end_date'>2022-03-03</field>
+            <field name='presential'>False</field>
         </record>
-        <record id='eventFlowdesk' model='dev_meet.event'>
-            <field name='name'>Flowdesk</field>
-            <field name='start_date'>7/23/2021</field>
-            <field name='end_date'>2/11/2022</field>
-            <field name='presential'>true</field>
+
+        <record id='event2' model='dev_meet.event'>
+            <field name='name'>Python World Congress</field>
+            <field name='start_date'>2022-03-04</field>
+            <field name='end_date'>2022-03-07</field>
+            <field name='presential'>False</field>
         </record>
-        <record id='eventTemp' model='dev_meet.event'>
-            <field name='name'>Temp</field>
-            <field name='start_date'>9/30/2021</field>
-            <field name='end_date'>5/16/2021</field>
-            <field name='presential'>false</field>
+
+        <record id='event3' model='dev_meet.event'>
+            <field name='name'>Flutter yearly meeting</field>
+            <field name='start_date'>2022-03-08</field>
+            <field name='end_date'>2022-03-09</field>
+            <field name='presential'>False</field>
         </record>
-        <record id='eventZaam-Dox' model='dev_meet.event'>
-            <field name='name'>Zaam-Dox</field>
-            <field name='start_date'>6/18/2021</field>
-            <field name='end_date'>5/30/2021</field>
-            <field name='presential'>true</field>
-        </record>
-        <record id='eventViva' model='dev_meet.event'>
-            <field name='name'>Viva</field>
-            <field name='start_date'>6/4/2021</field>
-            <field name='end_date'>4/5/2021</field>
-            <field name='presential'>false</field>
-        </record>
-        <record id='eventHatity' model='dev_meet.event'>
-            <field name='name'>Hatity</field>
-            <field name='start_date'>8/8/2021</field>
-            <field name='end_date'>11/16/2021</field>
-            <field name='presential'>true</field>
-        </record>
-        <record id='eventIt' model='dev_meet.event'>
-            <field name='name'>It</field>
-            <field name='start_date'>4/30/2021</field>
-            <field name='end_date'>5/29/2021</field>
-            <field name='presential'>true</field>
-        </record>
-        <record id='eventVoyatouch' model='dev_meet.event'>
-            <field name='name'>Voyatouch</field>
-            <field name='start_date'>1/11/2022</field>
-            <field name='end_date'>4/24/2021</field>
-            <field name='presential'>false</field>
-        </record>
+
     </data>
 </odoo>

@@ -33,6 +33,6 @@
         'demo/demo.xml',
         'demo/developers.xml',
         'demo/technologies.xml',
-        #'demo/events.xml',
+        'demo/events.xml',
     ],
 }
