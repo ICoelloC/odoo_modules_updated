@@ -356,6 +356,16 @@
           </form>
         </field>
       </record>
+
+      <record id="dev_meet.event" model="ir.ui.view">
+        <field name="name">dev_meet.event calendar</field>
+        <field name="model">dev_meet.event</field>
+        <field name="arch" type="xml">
+          <calendar string="Calendar of events" date_start="start_date" date_stop="end_date" color="presential">
+            <field name="name"/>
+          </calendar>
+        </field>
+      </record>
   
       <record id="dev_meet.event" model="ir.ui.view">
         <field name="name">dev_meet.event search</field>
@@ -486,25 +496,25 @@
       <!-- actions opening views on models -->
   
       <record model="ir.actions.act_window" id="dev_meet.action_developer_window">
-        <field name="name">Desarrolladores</field>
+        <field name="name">Developers</field>
         <field name="res_model">dev_meet.developer</field>
         <field name="view_mode">tree,form,kanban</field>
       </record>
   
       <record model="ir.actions.act_window" id="dev_meet.action_technology_window">
-        <field name="name">Tecnologías</field>
+        <field name="name">Technologies</field>
         <field name="res_model">dev_meet.technology</field>
         <field name="view_mode">tree,form,kanban</field>
       </record>
   
       <record model="ir.actions.act_window" id="dev_meet.action_event_window">
-        <field name="name">Eventos</field>
+        <field name="name">Events</field>
         <field name="res_model">dev_meet.event</field>
-        <field name="view_mode">calendar,tree,form,kanban</field>
+        <field name="view_mode">tree,form,calendar,kanban</field>
       </record>
   
       <record model="ir.actions.act_window" id="dev_meet.action_room_window">
-        <field name="name">Salas</field>
+        <field name="name">Rooms</field>
         <field name="res_model">dev_meet.room</field>
         <field name="view_mode">tree,form,kanban</field>
       </record>
@@ -512,15 +522,7 @@
   
       <!-- server action to the one above -->
   
-  <record id="dev_meet.event" model="ir.ui.view">
-    <field name="name">dev_meet.event calendar</field>
-    <field name="model">dev_meet.event</field>
-    <field name="arch" type="xml">
-      <calendar string="Calendar of events" date_start="start_date" date_stop="end_date" color="presential">
-        <field name="name"/>
-      </calendar>
-    </field>
-  </record>
+  
   
       <!-- Top menu item -->
   
@@ -532,16 +534,16 @@
   
       <!-- actions -->
   
-      <menuitem name="Desarrolladores" id="dev_meet.menu_developers_list" parent="dev_meet.menu_root"
+      <menuitem name="Developers" id="dev_meet.menu_developers_list" parent="dev_meet.menu_root"
                 action="dev_meet.action_developer_window"/>
   
-      <menuitem name="Tecnologías" id="dev_meet.menu_technology_list" parent="dev_meet.menu_root"
+      <menuitem name="Technologies" id="dev_meet.menu_technology_list" parent="dev_meet.menu_root"
                 action="dev_meet.action_technology_window"/>
   
-      <menuitem name="Eventos" id="dev_meet.menu_event_list" parent="dev_meet.menu_root"
+      <menuitem name="Events" id="dev_meet.menu_event_list" parent="dev_meet.menu_root"
                 action="dev_meet.action_event_window"/>
   
-      <menuitem name="Salas" id="dev_meet.menu_room_list" parent="dev_meet.menu_root"
+      <menuitem name="Rooms" id="dev_meet.menu_room_list" parent="dev_meet.menu_root"
                 action="dev_meet.action_room_window"/>
   
     </data>
