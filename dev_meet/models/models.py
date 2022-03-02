@@ -18,7 +18,7 @@ class developer(models.Model):
     email = fields.Char(string='Email', help='Email')
     phone = fields.Char(string='Phone number', help='Phone number')
     photo = fields.Image(string='Photo', help='Dev photo')
-    category = fields.Selection([('1','JUNIOR'),('2','SENIOR'),('3','PROYECT MANAGER'),('4','ANALIST')],'Category',default='1')
+    category = fields.Selection([('1','JUNIOR'),('2','SENIOR'),('3','PROJECT MANAGER'),('4','ANALIST')],'Category',default='1')
     technologies_learned = fields.Many2many(string='Languages learned', comodel_name='dev_meet.technology', help='Languages learned')
     interested_technologies = fields.Many2many(string='Interested in', comodel_name='dev_meet.technology', relation='interested_technologies', help='Interested in')
     events_as_speaker = fields.Many2many(string='Speaker on', comodel_name='dev_meet.event')
