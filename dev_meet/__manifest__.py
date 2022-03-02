@@ -30,9 +30,9 @@
     ],
     # only loaded in demonstration mode
     'demo': [
-        'demo/demo.xml',
         'demo/developers.xml',
         'demo/technologies.xml',
+        'demo/rooms.xml',
         'demo/events.xml',
     ],
 }

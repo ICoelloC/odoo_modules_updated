@@ -1,0 +1,16 @@
+<odoo>
+    <data>
+      <record id='room1' model='dev_meet.room'>
+        <field name='name'>Sala Atreo</field>
+        <field name='room_number'>14</field>
+        <field name='capacity'>120</field>
+        <field name='location'>Puertollano</field>
+      </record>
+      <record id='room2' model='dev_meet.room'>
+        <field name='name'>Sala Magna</field>
+        <field name='room_number'>3</field>
+        <field name='capacity'>200</field>
+        <field name='location'>Ciudad Real</field>
+      </record>
+    </data>
+</odoo>

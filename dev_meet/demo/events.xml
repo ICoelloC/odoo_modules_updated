@@ -1,7 +1,7 @@
 <odoo>
     <data>
         <record id='event1' model='dev_meet.event'>
-            <field name='name'>Toughjoyfax</field>
+            <field name='name'>World Developers Congress</field>
             <field name='start_date'>2022-03-01</field>
             <field name='end_date'>2022-03-03</field>
             <field name='presential'>False</field>
@@ -19,6 +19,14 @@
             <field name='start_date'>2022-03-08</field>
             <field name='end_date'>2022-03-09</field>
             <field name='presential'>False</field>
+        </record>
+
+        <record id='event3' model='dev_meet.event'>
+            <field name='name'>Geek week</field>
+            <field name='start_date'>2022-04-01</field>
+            <field name='end_date'>2022-04-07</field>
+            <field name='presential'>True</field>
+            <field name='room' ref='dev_meet.room1'></field>
         </record>
 
     </data>
