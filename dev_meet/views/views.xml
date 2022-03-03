@@ -36,9 +36,6 @@
                   <separator string="Contact Data"></separator>
                   <field name="email" />
                   <field name="phone" />
-                  <!--<field name="classroom" 
-                         attrs="{'invisible':[('is_student','=',False)],
-                                 'required':[('is_student','=',True)]}"/>-->
                 </group>
 
                 <group>
@@ -177,6 +174,28 @@
                 </group>
               </group>
               <notebook>
+
+                <page string="Developers">
+                  <notebook>
+                    <page name="Learned by" string="Learned by">
+                      <field name="developers" readonly="True">
+                        <tree>
+                          <field name="nickname"/>
+                          <field name="name"/>
+                        </tree>
+                      </field>
+                    </page>
+                    <page name="Interested by" string="Interested by">
+                      <field name="interested_developers" readonly="True">
+                        <tree>
+                          <field name="nickname"/>
+                          <field name="name"/>
+                        </tree>
+                      </field>
+                    </page>
+                  </notebook>
+                </page>
+
                 <page string="Events">
                   <field name="events" readonly="True">
                     <tree>
@@ -534,16 +553,16 @@
   
       <!-- actions -->
   
-      <menuitem name="Developers" id="dev_meet.menu_developers_list" parent="dev_meet.menu_root"
+      <menuitem name="Desarrolladores" id="dev_meet.menu_developers_list" parent="dev_meet.menu_root"
                 action="dev_meet.action_developer_window"/>
   
-      <menuitem name="Technologies" id="dev_meet.menu_technology_list" parent="dev_meet.menu_root"
+      <menuitem name="Tecnologías" id="dev_meet.menu_technology_list" parent="dev_meet.menu_root"
                 action="dev_meet.action_technology_window"/>
   
-      <menuitem name="Events" id="dev_meet.menu_event_list" parent="dev_meet.menu_root"
+      <menuitem name="Eventos" id="dev_meet.menu_event_list" parent="dev_meet.menu_root"
                 action="dev_meet.action_event_window"/>
   
-      <menuitem name="Rooms" id="dev_meet.menu_room_list" parent="dev_meet.menu_root"
+      <menuitem name="Salas" id="dev_meet.menu_room_list" parent="dev_meet.menu_root"
                 action="dev_meet.action_room_window"/>
   
     </data>
