@@ -347,13 +347,23 @@
               <t t-name="kanban-box">
                 <div>
                   <div t-attf-class="oe_kanban_content">
-                    <h4>
+                    <h1>
                       <a type="edit">
                         <field name="name"/>
                       </a>
-                    </h4>
-                   <field name="start_date"/>
-                   <field name="end_date"/>
+                    </h1>
+                   <h3>
+                     <p>Fecha de inicio: </p>
+                    <a type="edit">
+                      <field name="start_date"/>
+                    </a>
+                   </h3>
+                   <h3>
+                    <p>Fecha de finalización: </p>
+                    <a type="edit">
+                      <field name="end_date"/>
+                    </a>
+                   </h3>
                   </div>
                 </div>
               </t>
